@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int maxProfit(const vector<int>& prices) {
+    int maxProfit = 0;
+    int n = prices.size();
+    for (int i = 1; i < n; i++) {
+        if (prices[i] > prices[i - 1]) {
+            maxProfit += prices[i] - prices[i - 1];
+        }
+    }
+    return maxProfit;
+}
+
+int main() {
+    int n, m;
+    
+    // Input Validation for number of companies and days
+    cout << "Number of companies: ";
+    cin >> n;
+    if (n <= 0) {
+        cout << "Invalid input! Number of companies must be greater than 0." << endl;
+        return 1; // Exit program if invalid input
+    }
+
+    cout << "Number of days: ";
+    cin >> m;
+    if (m <= 0) {
+        cout << "Invalid input! Number of days must be greater than 0." << endl;
+        return 1; // Exit program if invalid input
+    }
+
+    // Create a 2D vector for stock prices
+    vector<vector<int>> arr(n, vector<int>(m));    
+
+    // Input stock prices for each company and each day
+    cout << "Enter stock prices for each company for each day:" << endl;
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            cin >> arr[i][j];
+            // Edge case: if stock price is negative
+            if (arr[i][j] < 0) {
+                cout << "Stock price cannot be negative. Please enter valid stock prices." << endl;
+                return 1; // Exit if negative price is entered
+            }
+        }
+    }
+
+    // Output stock prices
+    cout << "Stock prices for each company for each day:" << endl;
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            cout << arr[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    // Initialize variable for maximum profit
+    int maxprofit = 0;
+
+    // Calculate maximum profit for each company
+    for(int i = 0; i < n; i++) {
+        // Call maxProfit function to calculate profit for each company
+        int daily_profit = maxProfit(arr[i]);  // Pass vector directly
+        maxprofit = max(maxprofit, daily_profit);  // Update the maximum profit
+    }
+
+    cout << "Max profit of each day in each company after multiple transactions: " << maxprofit << endl;
+
+    return 0;
+}
